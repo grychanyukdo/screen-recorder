@@ -3,7 +3,6 @@
 let recorder = null;
 let filename = null;
 chrome.runtime.onConnect.addListener(port => {
-
   port.onMessage.addListener(msg => {
     console.log(msg);
     switch (msg.type) {
@@ -53,23 +52,19 @@ chrome.runtime.onConnect.addListener(port => {
             };
 
             recorder.onstop = function () {
-                var superBuffer = new Blob(chunks, {
-                    type: 'video/webm'
-                });
-
-                var url = URL.createObjectURL(superBuffer);
-                // var a = document.createElement('a');
-                // document.body.appendChild(a);
-                // a.style = 'display: none';
-                // a.href = url;
-                // a.download = 'test.webm';
-                // a.click();
-
-              chrome.downloads.download({
-                url: url,
-                filename: filename
-              }, ()=>{
+              var superBuffer = new Blob(chunks, {
+                type: 'video/webm'
               });
+
+              var url = URL.createObjectURL(superBuffer);
+              // var a = document.createElement('a');
+              // document.body.appendChild(a);
+              // a.style = 'display: none';
+              // a.href = url;
+              // a.download = 'test.webm';
+              // a.click();
+
+              chrome.downloads.download({ url: url, filename: filename }, ()=>{});
             }
 
             recorder.start();
